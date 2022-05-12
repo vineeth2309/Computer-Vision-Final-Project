@@ -12,7 +12,11 @@ To Run 3D segmentation:
     2) Run Q3_thresh.m   
 
 To Run Additional Methods:
+
     1) Run additional_implementations/FuzzyCMeans.m
+
     2) Deep Learning Approach:
+
         a) To train the model, set the flag train=True, and flag test = False
+
         b) To test and evaluate the model, set the flag train=False, and flag test=True
