@@ -63,8 +63,6 @@ for j=1:10
     label_vals = bg_mask == 1;
     label_mask(label_vals)=label_idx;
     label_idx=label_idx+1;
-    subplot(6,2,2);
-    imagesc(bg_mask);
 
     % Create an image mask containing only outer ring
     outer_img_mask = img;
@@ -84,8 +82,6 @@ for j=1:10
     outer_ring_label_vals = outer_ring_mask == 1;
     label_mask(outer_ring_label_vals)=label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,4);
-    imagesc(outer_ring_mask);
     
     %Extract the mask of Class 2 from the segmented mask, and update 
     % final segmented label mask
@@ -99,8 +95,6 @@ for j=1:10
     inner_mask_vals = inner_ring_mask == 1;
     label_mask(inner_mask_vals)=label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,6);
-    imagesc(inner_ring_mask);
 
     % Create an image mask containing only inner components
     se = strel('disk', 5);
@@ -110,7 +104,6 @@ for j=1:10
     % Perform K Means segmentation to segment inner image mask
     L_inner = imsegkmeans(inner_img_mask, 4); 
 
-   subplot_idx=8;   % Initialize subplot index to display  
     for i=3:5       % Iterate through each of classes 3-5
         % Create ground truth mask for ith class
         gt_mask = zeros((size(lab)));
@@ -127,17 +120,18 @@ for j=1:10
                 % If match is greater than 80%, then create predicted mask
                 label_mask(vals) = label_idx;
                 label_idx = label_idx+1;
-                subplot(6,2,subplot_idx);
-                imagesc(mask);
-                subplot_idx = subplot_idx+2;
                 break;
             end
         end
     end
-    % Draw Updated class 1 mask after filling in other class masks 
-    subplot(6,2,4);
-    imagesc(label_mask==1);
-    
+    % Draw Predicted segmentation masks 
+    k=0;
+    for i=2:2:12
+        subplot(6, 2, i);
+        imagesc(label_mask==k);
+        k=k+1;
+    end
+
     % Calculate metrics to compare ground truth and segmentation mask
     similarity = jaccard(categorical(lab), categorical(label_mask));
     similarity_score = similarity_score + similarity;

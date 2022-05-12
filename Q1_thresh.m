@@ -60,12 +60,10 @@ for j=1:10
     filled_inner_ring_mask = imfill(inner_ring_mask, 'holes');
     
     % Create background mask, and update final predicted segmentation mask
-    subplot(6,2,2);
     label_vals = bg_mask == 1;
     label_mask(label_vals)=label_idx;
     label_idx=label_idx+1;
-    imagesc(bg_mask);
-  
+
     % Create an image mask containing only outer ring
     outer_img_mask = img;
     outer_vals = filled_inner_ring_mask == 1;
@@ -83,8 +81,6 @@ for j=1:10
     outer_ring_label_vals = outer_ring_mask == 1;
     label_mask(outer_ring_label_vals)=label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,4);
-    imagesc(outer_ring_mask);
     
     %Extract the mask of Class 2 from the segmented mask, and update 
     % final segmented label mask
@@ -98,8 +94,6 @@ for j=1:10
     inner_mask_vals = inner_ring_mask == 1;
     label_mask(inner_mask_vals)=label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,6);
-    imagesc(L==2);
 
     % Create an image mask containing only inner components
     se = strel('disk', 5);
@@ -116,8 +110,6 @@ for j=1:10
     lab4_mask(lab4_vals) = 1;
     label_mask(lab4_vals) = label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,8);
-    imagesc(lab4_mask);
     
     % Create mask for class 4
     lab5_mask = zeros((size(lab)));
@@ -125,8 +117,6 @@ for j=1:10
     lab5_mask(lab5_vals) = 1;
     label_mask(lab5_vals) = label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,10);
-    imagesc(lab5_mask);
     
     % Create mask for class 5
     lab6_mask = zeros((size(lab)));
@@ -135,12 +125,14 @@ for j=1:10
     lab6_vals = lab6_mask == 1;
     label_mask(lab6_vals) = label_idx;
     label_idx = label_idx+1;
-    subplot(6,2,12);
-    imagesc(lab6_mask);
 
-    % Draw Updated class 1 mask after filling in other class masks 
-    subplot(6,2,4);
-    imagesc(label_mask==1);
+    % Draw Predicted segmentation masks 
+    k=0;
+    for i=2:2:12
+        subplot(6, 2, i);
+        imagesc(label_mask==k);
+        k=k+1;
+    end
 
     % Calculate metrics to compare ground truth and segmentation mask
     similarity = jaccard(categorical(lab), categorical(label_mask));
