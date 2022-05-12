@@ -60,10 +60,10 @@ for j=1:10
     filled_inner_ring_mask = imfill(inner_ring_mask, 'holes');
     
     % Create background mask, and update final predicted segmentation mask
-    subplot(6,2,2);
     label_vals = bg_mask == 1;
     label_mask(label_vals)=label_idx;
     label_idx=label_idx+1;
+    subplot(6,2,2);
     imagesc(bg_mask);
 
     % Create an image mask containing only outer ring
@@ -134,7 +134,10 @@ for j=1:10
             end
         end
     end
-
+    % Draw Updated class 1 mask after filling in other class masks 
+    subplot(6,2,4);
+    imagesc(label_mask==1);
+    
     % Calculate metrics to compare ground truth and segmentation mask
     similarity = jaccard(categorical(lab), categorical(label_mask));
     similarity_score = similarity_score + similarity;

@@ -138,6 +138,10 @@ for j=1:10
     subplot(6,2,12);
     imagesc(lab6_mask);
 
+    % Draw Updated class 1 mask after filling in other class masks 
+    subplot(6,2,4);
+    imagesc(label_mask==1);
+
     % Calculate metrics to compare ground truth and segmentation mask
     similarity = jaccard(categorical(lab), categorical(label_mask));
     similarity_score = similarity_score + similarity;
