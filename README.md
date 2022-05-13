@@ -15,6 +15,7 @@ To Run Additional Methods:
 
     1) Run additional_implementations/FuzzyCMeans.m
 
+    
     2) Deep Learning Approach:
 
         a) To train the model, set the flag train=True, and flag test = False
